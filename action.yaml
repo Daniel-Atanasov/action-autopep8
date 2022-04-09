@@ -1,0 +1,20 @@
+name: 'Autopep8'
+description: 'Run autopep8 and report suggested changes'
+author: 'Daniel Atanasov <daniel.a.atanasov97@gmail.com>'
+inputs:
+  github_token:
+    description: 'GITHUB_TOKEN'
+    required: false
+    default: '${{ github.token }}'
+  autopep8_flags:
+    description: "Flags passed directly to autopep8"
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - run: $GITHUB_ACTION_PATH/run.sh
+      shell: sh
+      env:
+        REVIEWDOG_VERSION: v0.14.0
+        INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}
+        INPUT_AUTOPEP8_FLAGS: ${{ inputs.autopep8_flags }}
