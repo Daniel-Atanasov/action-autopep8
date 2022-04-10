@@ -9,8 +9,6 @@ echo '::group::🐶 Installing reviewdog...'
 curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b "${TEMP_PATH}" "${REVIEWDOG_VERSION}" 2>&1
 echo '::endgroup::'
 
-export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
-
 echo '::group:: Running autopep8 with reviewdog 🐶 ...'
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
@@ -22,7 +20,7 @@ autopep8_output="$(autopep8 -r -i ${INPUT_AUTOPEP8_FLAGS} "${INPUT_TARGET:-.}" 2
 
 git add -A
 echo "$(git diff --staged)"
-echo "$(git diff --staged)" | reviewdog -name=autopep8 -f=diff -diff="git diff --staged" -reporter=github-pr-check || reviewdog_exitcode="$?"
+echo "$(git diff --staged)" | reviewdog -name=autopep8 -f=diff -f.diff.strip=1 -diff="git diff --staged" -reporter=github-pr-review || reviewdog_exitcode="$?"
 git reset
 echo '::endgroup::'
 
