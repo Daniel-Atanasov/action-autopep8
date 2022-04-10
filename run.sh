@@ -21,6 +21,7 @@ reviewdog_exitcode="0"
 autopep8_output="$(autopep8 -r -i ${INPUT_AUTOPEP8_FLAGS} "${INPUT_TARGET:-.}" 2>&1)" || autopep8_exitcode="$?"
 
 git add -A
+echo "$(git diff --staged)"
 echo "$(git diff --staged)" | reviewdog -name=autopep8 -f=diff -diff="git diff --staged" -reporter=github-pr-check || reviewdog_exitcode="$?"
 git reset
 echo '::endgroup::'
